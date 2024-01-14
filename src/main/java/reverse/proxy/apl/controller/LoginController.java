@@ -1,6 +1,8 @@
 package reverse.proxy.apl.controller;
 
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -13,6 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class LoginController {
+	
+	Logger logger = Logger.getLogger(LoginController.class.getName());
 
 	@GetMapping({"/", "/home"})
 	public String index() {
@@ -31,7 +35,7 @@ public class LoginController {
 	
 	@PostMapping("/login")
 	public String login(HttpServletRequest httpRequest, @ModelAttribute("username") @Validated String username, BindingResult result) {
-		
+		logger.log(Level.INFO, "DN情報：" +  httpRequest.getHeader("dn") + "ユーザー名：" + username);
 		if (Objects.equals(httpRequest.getHeader("dn"), username)) {
 			return "forward:/auth";
 		}
