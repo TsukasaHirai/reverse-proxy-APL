@@ -1,13 +1,11 @@
-package reverse.proxy.apl.model;
+package reverse.proxy.apl.dto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
+@Data
 @Entity
 public class Employee {
     

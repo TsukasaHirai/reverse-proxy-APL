@@ -7,16 +7,17 @@
 <body>
 	<div th:if="${param.error}">
         Invalid username and password.
-        </div>
+    </div>
     <div th:if="${param.logout}">
         You have been logged out.
     </div>
     <p>ログイン画面</p>
-	<form th:action="@{/login}" method="post">
-        <input type="text" name="username" placeholder="username" />
-        <input type="password" name="password" placeholder="password" />
+	<form th:action="@{/login}" method="post" th:object="${loginUser}">
+        <input type="text" name="username" placeholder="username" th:field="*{username}"/><br>
+        <div th:errors="*{username}" style="color: red" ></div>
+        <input type="password" name="password" placeholder="password" th:field="*{password}" /><br>
+        <div th:errors="*{password}" style="color: red" ></div>
         <button type="submit">ログイン</button>
     </form>
-    
 </body>
 </html>
