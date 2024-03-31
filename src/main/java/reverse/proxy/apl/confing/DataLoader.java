@@ -19,16 +19,24 @@ public class DataLoader implements CommandLineRunner {
 	
 	private final EmployeeRepository repository;
 	
+	private static final String DEFAULT_USERNAME = "test";
+	
+	private static final String DEFAULT_PASSWORD = "password";
+	
 	/**
 	 * 起動時に実行される処理。
 	 */
 	@Override
 	public void run(String... args) throws Exception {
 		
-		// H2にログインユーザを投入する。
+		// ログインユーザを投入する。
+		if (repository.findByUsername(DEFAULT_USERNAME).isPresent()) {
+			// すでに登録済みの場合はスキップをする
+			return;
+		}
 		Employee employee = new Employee();
-		employee.setUsername("test");
-		employee.setPassword(passwordEncoder.encode("password"));
+		employee.setUsername(DEFAULT_USERNAME);
+		employee.setPassword(passwordEncoder.encode(DEFAULT_PASSWORD));
 		
 		repository.save(employee);
 	}
