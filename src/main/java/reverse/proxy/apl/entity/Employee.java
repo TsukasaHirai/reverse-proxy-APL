@@ -1,4 +1,4 @@
-package reverse.proxy.apl.dto;
+package reverse.proxy.apl.entity;
 
 import java.sql.Timestamp;
 import java.util.UUID;

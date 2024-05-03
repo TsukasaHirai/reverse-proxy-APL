@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import reverse.proxy.apl.dto.Employee;
+import reverse.proxy.apl.entity.Employee;
 import reverse.proxy.apl.repository.EmployeeRepository;
 
 @RequiredArgsConstructor

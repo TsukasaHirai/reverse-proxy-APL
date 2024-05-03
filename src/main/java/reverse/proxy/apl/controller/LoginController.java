@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +14,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.context.Scope;
+import lombok.RequiredArgsConstructor;
 import reverse.proxy.apl.form.LoginUser;
 
+@RequiredArgsConstructor
 @Controller
 public class LoginController {
+
+	private final Tracer tracer;
 	
 	private static final Logger LOG = Logger.getLogger(LoginController.class.getName());
 
@@ -42,12 +49,19 @@ public class LoginController {
 	 * ログイン処理
 	 * 
 	 * @param dn Nginxから受信したクライアント証明書情報
-	 * @param username formで受信したユーザー名
+	 * @param loginUser formで受信したユーザー情報
 	 * @param result バリデーション結果
 	 * @return
 	 */
 	@PostMapping("/login")
 	public String login(@RequestHeader(name = "dn", required = false) String dn, @ModelAttribute @Validated LoginUser loginUser, BindingResult result) {
+		Span span = tracer.spanBuilder("Test").startSpan();
+		try(Scope scope = span.makeCurrent()) {
+			span.setAttribute("Test", "OK");
+		} finally {
+			span.end();
+		}
+
 		if (result.hasErrors()) {
 			LOG.log(Level.INFO, "バリデーションエラー:" + loginUser.toString());
 			return "login";
@@ -70,10 +84,11 @@ public class LoginController {
 	 * @return trueであれば common nameとdn情報が一致、一致しなければfalse
 	 */
 	private boolean isEqualsUsernameAndCommonName(final String dn, final String username) {
-		if (dn == null || username == null) {
+		if (ObjectUtils.isEmpty(dn) || ObjectUtils.isEmpty(username)) {
 			return false;
 		}
-		String[] subjects = StringUtils.split(dn, ",");
+		String[] subjects = dn.split(",");
+
 		String commonName = Arrays.stream(subjects).filter(subject -> subject.trim().startsWith("CN=")).findFirst().orElse("").trim();
 		
 		return commonName.substring(3).equals(username);
