@@ -1,12 +1,10 @@
 package reverse.proxy.apl.controller;
 
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +17,7 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import lombok.RequiredArgsConstructor;
 import reverse.proxy.apl.form.LoginUser;
+import reverse.proxy.apl.util.LoginUtil;
 
 @RequiredArgsConstructor
 @Controller
@@ -68,29 +67,10 @@ public class LoginController {
 		}
 		
 		LOG.log(Level.INFO, "DN情報：" +  dn + "ユーザー名：" + loginUser.getUsername());
-		if (isEqualsUsernameAndCommonName(dn, loginUser.getUsername())) {
+		if (LoginUtil.isEqualsUsernameAndCommonName(dn, loginUser.getUsername())) {
 			LOG.log(Level.INFO, "証明書情報とユーザー名が一致しました");
 		}
 
 		return "forward:/auth";
-	}
-
-	
-	/**
-	 * ユーザ名とCommon Nameが一致するかを検証する
-	 * 
-	 * @param dn dn情報
-	 * @param username ユーザー名
-	 * @return trueであれば common nameとdn情報が一致、一致しなければfalse
-	 */
-	private boolean isEqualsUsernameAndCommonName(final String dn, final String username) {
-		if (ObjectUtils.isEmpty(dn) || ObjectUtils.isEmpty(username)) {
-			return false;
-		}
-		String[] subjects = dn.split(",");
-
-		String commonName = Arrays.stream(subjects).filter(subject -> subject.trim().startsWith("CN=")).findFirst().orElse("").trim();
-		
-		return commonName.substring(3).equals(username);
 	}
 }

@@ -38,7 +38,7 @@ public class OpenTelemetryConfig {
 	OpenTelemetry openTelemetry() {
 		
 		if (GlobalOpenTelemetry.get() != null) {
-			// Eclipseリスタート用、すでに登録作成済みの場合は、作成した設定を返却する。
+			// Eclipseリスタート用
 			LOG.info("OpenTelemetryの設定がすでに作成されているため、削除をしてから再作成をします。");
 			GlobalOpenTelemetry.resetForTest();
 		}
