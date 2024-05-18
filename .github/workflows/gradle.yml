@@ -26,8 +26,6 @@ jobs:
         image: gcr.io/cloud-spanner-emulator/emulator
         ports:
           - 9010:9010
-      gcloud:
-        image: google/cloud-sdk
 
     env:
       SPANNER_EMULATOR_HOST: localhost:9010
@@ -45,15 +43,24 @@ jobs:
       with:
         version: 'latest'
 
-    - name: Create Spanner instance and database
-      run: |
-        gcloud config configurations create emulator
-        gcloud config set auth/disable_credentials true
-        gcloud config set project test-project
-        gcloud config set api_endpoint_overrides/spanner http://localhost:9010/
-        gcloud spanner instances create test-instance --config=emulator-config --description="Test instance" --nodes=1
-        gcloud spanner databases create example-db --instance=test-instance
+    - name: Set Up gcloud confing
+      run: gcloud config configurations create emulator
 
+    - name: gcloud config set auth/disable_credentials true
+      run: gcloud config set auth/disable_credentials true
+
+    - name: gcloud config set project test-project
+      run: gcloud config set project test-project
+
+    - name: gcloud config set api_endpoint_overrides/spanner http://localhost:9010/
+      run: gcloud config set api_endpoint_overrides/spanner http://localhost:9010/
+
+    - name: gcloud spanner instances create test-instance --config=emulator-config --description="Test instance" --nodes=1
+      run: gcloud spanner instances create test-instance --config=emulator-config --description="Test instance" --nodes=1
+        
+    - name: gcloud spanner databases create example-db --instance=test-instance
+      run: gcloud spanner databases create example-db --instance=test-instance
+        
     # Configure Gradle for optimal use in GiHub Actions, including caching of downloaded dependencies.
     # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
     - name: Setup Gradle
