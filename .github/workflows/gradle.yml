@@ -26,6 +26,8 @@ jobs:
         image: gcr.io/cloud-spanner-emulator/emulator
         ports:
           - 9010:9010
+      gcloud:
+        image: google/cloud-sdk
 
     env:
       SPANNER_EMULATOR_HOST: localhost:9010
@@ -45,8 +47,7 @@ jobs:
 
     - name: Create Spanner instance and database
       run: |
-        sudo apt-get install -y iputils-ping
-        until ping -c1 localhost &>/dev/null; do :; done
+        gcloud config configurations create emulator
         gcloud config set auth/disable_credentials true
         gcloud config set project test-project
         gcloud config set api_endpoint_overrides/spanner http://localhost:9010/
