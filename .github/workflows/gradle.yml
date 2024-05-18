@@ -52,8 +52,8 @@ jobs:
     - name: gcloud config set project test-project
       run: gcloud config set project test-project
 
-    - name: gcloud config set api_endpoint_overrides/spanner http://localhost:9010/
-      run: gcloud config set api_endpoint_overrides/spanner http://localhost:9010/
+    - name: gcloud config set api_endpoint_overrides/spanner http://localhost:9020/
+      run: gcloud config set api_endpoint_overrides/spanner http://localhost:9020/
 
     - name: gcloud spanner instances create test-instance --config=emulator-config --description="Test instance" --nodes=1
       run: gcloud spanner instances create test-instance --config=emulator-config --description="Test instance" --nodes=1
