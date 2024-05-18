@@ -20,12 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-
-    services:
-      spanner:
-        image: gcr.io/cloud-spanner-emulator/emulator
-        ports:
-          - 9010:9010
+    container: #起動するコンテナイメージを指定
+      image: node:13.5.0-alpine3.10
 
     env:
       SPANNER_EMULATOR_HOST: localhost:9010
@@ -42,6 +38,9 @@ jobs:
       uses: google-github-actions/setup-gcloud@v1
       with:
         version: 'latest'
+        
+    - name: docker run -d -p 9010:9010 -p 9020:9020 gcr.io/cloud-spanner-emulator/emulator
+      run: docker run -d -p 9010:9010 -p 9020:9020 gcr.io/cloud-spanner-emulator/emulator
 
     - name: Set Up gcloud confing
       run: gcloud config configurations create emulator
