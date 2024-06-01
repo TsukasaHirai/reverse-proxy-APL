@@ -64,6 +64,10 @@ jobs:
         
     - name: gcloud spanner databases create example-db --instance=test-instance
       run: gcloud spanner databases create example-db --instance=test-instance
+    
+    - name: Setup DDL
+      run: gcloud spanner databases ddl update example-db --instance=test-instance --ddl-file=src/main/resources/schema.sql 
+
         
     # Configure Gradle for optimal use in GiHub Actions, including caching of downloaded dependencies.
     # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
