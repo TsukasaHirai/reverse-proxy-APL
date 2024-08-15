@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.context.Scope;
 import lombok.RequiredArgsConstructor;
 import reverse.proxy.apl.form.LoginUser;
 import reverse.proxy.apl.util.LoginUtil;
@@ -54,12 +52,6 @@ public class LoginController {
 	 */
 	@PostMapping("/login")
 	public String login(@RequestHeader(name = "dn", required = false) String dn, @ModelAttribute @Validated LoginUser loginUser, BindingResult result) {
-		Span span = tracer.spanBuilder("Test").startSpan();
-		try(Scope scope = span.makeCurrent()) {
-			span.setAttribute("Test", "OK");
-		} finally {
-			span.end();
-		}
 
 		if (result.hasErrors()) {
 			LOG.log(Level.INFO, "バリデーションエラー:" + loginUser.toString());

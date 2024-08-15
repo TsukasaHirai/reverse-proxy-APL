@@ -47,7 +47,7 @@ class UserDetailsServiceImplTest {
 	
 	@Test
 	@DisplayName("ユーザーが存在しない場合、例外をスローするかのテスト")
-	void notFindByUserTest() {
+	void notFoundByUserTest() {
 		// Act & Assert
 		assertThrows(UsernameNotFoundException.class, () -> target.loadUserByUsername("Not Found"));
 	}

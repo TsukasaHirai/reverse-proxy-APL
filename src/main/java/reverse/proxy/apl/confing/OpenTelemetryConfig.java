@@ -36,12 +36,7 @@ public class OpenTelemetryConfig {
 	 */
 	@Bean
 	OpenTelemetry openTelemetry() {
-		
-		if (GlobalOpenTelemetry.get() != null) {
-			// Eclipseリスタート用
-			LOG.info("OpenTelemetryの設定がすでに作成されているため、削除をしてから再作成をします。");
-			GlobalOpenTelemetry.resetForTest();
-		}
+		GlobalOpenTelemetry.resetForTest();
 		
 		Resource resource = Resource.getDefault()
 				.merge(ContainerResource.get())
