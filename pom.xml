@@ -122,6 +122,11 @@
 			<artifactId>junit-vintage-engine</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.jacoco</groupId>
+			<artifactId>jacoco-maven-plugin</artifactId>
+			<version>0.8.12</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -163,6 +168,11 @@
 						<image>reverse-proxy-apl</image>
 					</to>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.12</version>
 			</plugin>
 		</plugins>
 	</build>
