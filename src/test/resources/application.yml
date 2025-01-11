@@ -1,9 +1,6 @@
 server:
-  forward-headers-strategy: NATIVE
+  forward-headers-strategy: native
 spring:
-  sql:
-    init:
-      mode: always
   cloud:
     gcp:
       spanner:
