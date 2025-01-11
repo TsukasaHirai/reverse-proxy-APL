@@ -1,0 +1,44 @@
+# server.tomcat.redirect-context-root=false
+# 以下はリバースプロキシを使用する場合は必須 
+server:
+  forward-headers-strategy: native
+spring:
+  cloud:
+    gcp:
+      spanner:
+        instance-id: test-instance
+        database: example-db
+        project-id: test-project
+        emulator:
+          enabled: true
+management:
+  tracing:
+    enabled: false
+# Actuatorのエンドポイントを公開する
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    metrics:
+      enabled: true
+# Prometheus用のメトリクスエンドポイントを有効にする
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+otel:
+  sdk:
+    disabled: false
+  propagators: tracecontext
+  service:
+    name: reverse-proxy-apl.reverse-proxy
+  resource:
+    attributes:
+      deployment:
+        environment: local
+      service:
+        namespace: reverse-proxy
+  instrumentation:
+    common:
+      default-enabled: false
