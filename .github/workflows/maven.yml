@@ -55,4 +55,10 @@ jobs:
         gcloud spanner databases create example-db --instance=test-instance
 
     - name: Run the Maven verify phase
-      run: mvn --batch-mode --update-snapshots verify
+      run: mvn jacoco:prepare-agent --batch-mode --update-snapshots verify jacoco:report
+
+    - name: jacoco report artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: my-artifact
+        path: ./target/site/jacoco
