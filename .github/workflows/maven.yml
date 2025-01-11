@@ -42,6 +42,7 @@ jobs:
 
     - name: Set Up gcloud Configuration
       run: |
+        docker run -d -p 9010:9010 -p 9020:9020 gcr.io/cloud-spanner-emulator/emulator
         gcloud config configurations create emulator
         gcloud config set auth/disable_credentials true
         gcloud config set project test-project
