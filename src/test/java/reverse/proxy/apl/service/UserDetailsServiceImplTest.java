@@ -10,9 +10,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import reverse.proxy.apl.confing.DataLoader;
 import reverse.proxy.apl.entity.Employee;
@@ -21,10 +21,10 @@ import reverse.proxy.apl.repository.EmployeeRepository;
 @SpringBootTest
 class UserDetailsServiceImplTest {
 	
-	@MockBean
+	@MockitoBean
 	private DataLoader dataLoader;
 	
-	@MockBean
+	@MockitoBean
 	private EmployeeRepository repository;
 	
 	@Autowired

@@ -1,15 +1,12 @@
 package reverse.proxy.apl.confing;
 
-import java.io.IOException;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.google.cloud.spanner.SpannerException;
 import com.google.cloud.spring.data.spanner.core.admin.SpannerDatabaseAdminTemplate;
 import com.google.cloud.spring.data.spanner.core.admin.SpannerSchemaUtils;
 import com.google.cloud.spring.data.spanner.core.mapping.Table;
@@ -54,17 +51,22 @@ public class DataLoader implements CommandLineRunner {
 	/*
 	 * アプリが使用するテーブルがない場合のみ、テーブルを作成する。
 	 */
-	private void createTable() throws SpannerException, InterruptedException, ExecutionException, IOException {
-		createTables.stream()
-				.filter(t -> t.isAnnotationPresent(Table.class)) 
-				.forEach(t -> {
-					String tableName = t.getAnnotation(Table.class).name();
-					if (!this.spannerDatabaseAdminTemplate.tableExists(tableName)) {
-						LOG.info("テーブルを作成します");
-						this.spannerDatabaseAdminTemplate.executeDdlStrings(
-								this.spannerSchemaUtils.getCreateTableDdlStringsForInterleavedHierarchy(t), true);
-					}
-				});
+	private void createTable() {
+		try {
+			createTables.stream()
+			.filter(t -> t.isAnnotationPresent(Table.class)) 
+			.forEach(t -> {
+				String tableName = t.getAnnotation(Table.class).name();
+				if (!this.spannerDatabaseAdminTemplate.tableExists(tableName)) {
+					LOG.info("テーブルを作成します");
+					this.spannerDatabaseAdminTemplate.executeDdlStrings(
+							this.spannerSchemaUtils.getCreateTableDdlStringsForInterleavedHierarchy(t), true);
+				}
+			});
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
+		}
+
     }
 
 	/**

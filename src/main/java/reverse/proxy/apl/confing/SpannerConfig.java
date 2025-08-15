@@ -22,6 +22,7 @@ public class SpannerConfig {
 		SpannerOptions.enableOpenTelemetryTraces();
 		return SpannerOptions.newBuilder()
 				.setOpenTelemetry(openTelemetry)
+				.setProjectId(gcpSpannerProperties.getProjectId())
 				.setEmulatorHost(gcpSpannerProperties.getEmulatorHost())
 				.setCredentials(NoCredentials.getInstance())
 				.build();

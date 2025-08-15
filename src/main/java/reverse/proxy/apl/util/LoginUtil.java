@@ -2,7 +2,7 @@ package reverse.proxy.apl.util;
 
 import java.util.Arrays;
 
-import org.springframework.util.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public final class LoginUtil {
 	
@@ -18,7 +18,7 @@ public final class LoginUtil {
 	 * @return trueであれば common nameとdn情報が一致、一致しなければfalse
 	 */
 	public static boolean isEqualsUsernameAndCommonName(final String dn, final String username) {
-		if (ObjectUtils.isEmpty(dn) || ObjectUtils.isEmpty(username)) {
+		if (StringUtils.isAnyEmpty(dn, username)) {
 			return false;
 		}
 		String[] subjects = dn.split(",");

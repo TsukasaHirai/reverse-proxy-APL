@@ -14,24 +14,22 @@ import io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizerProvide
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
 import io.opentelemetry.sdk.trace.samplers.SamplingResult;
-import lombok.RequiredArgsConstructor;
 import reverse.proxy.apl.util.TraceUtil;
 
 /**
  * Opentemetry用の設定クラス
  */
-@RequiredArgsConstructor
 @Configuration
 public class OpenTelemetryConfig {
 	
 	@Bean
-	public AutoConfigurationCustomizerProvider otelCustomizer() {
+	AutoConfigurationCustomizerProvider otelCustomizer() {
 		return p -> p.addSamplerCustomizer((sampler, configProperties) -> getCustomSampler());
 	}
 	
 	
 	@Bean
-	public Tracer initOpenTelemetry(OpenTelemetry openTelemetry) {
+	Tracer initOpenTelemetry(OpenTelemetry openTelemetry) {
 		Tracer tracer = openTelemetry.getTracer("default");
 		TraceUtil.init(openTelemetry);
 		return tracer;
