@@ -1,14 +1,12 @@
-name: Docker
-
+name: JIB container publish
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
 # documentation.
 
 on:
-  push:
-    tags:        
-      - '*' 
+  release:
+    types: [created]
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -36,7 +34,7 @@ jobs:
           # github.repository as <your-account>/<your-repo>
           IMAGE_NAME: ${{ env.NAMESPACE }}/${{ env.IMAGE_NAME }}
           # Tag name of the image to publish
-          tag-name: latest,${{ github.sha }}
+          tag-name: ${{ github.event.release.tag_name }}
           # Username to login to registry
           USERNAME: ${{ github.actor }}
           # Password to login to registry
