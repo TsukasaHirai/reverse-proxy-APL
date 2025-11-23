@@ -171,9 +171,6 @@
                             </platform>
                         </platforms>
                     </from>
-                    <container>
-                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
-                    </container>
                 </configuration>
             </plugin>
             <plugin>
