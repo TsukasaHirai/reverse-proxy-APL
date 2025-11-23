@@ -71,6 +71,12 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
     steps:
       - name: JIB container build and publish
         uses: MathieuSoysal/jib-container-publish.yml@v2.1.5
@@ -80,7 +86,7 @@ jobs:
           # github.repository as <your-account>/<your-repo>
           IMAGE_NAME: ${{ env.NAMESPACE }}/${{ env.IMAGE_NAME }}
           # Tag name of the image to publish
-          tag-name: latest
+          tag-name: latest,${{ github.sha }}
           # Username to login to registry
           USERNAME: ${{ github.actor }}
           # Password to login to registry
