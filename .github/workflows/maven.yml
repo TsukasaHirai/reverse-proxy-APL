@@ -70,6 +70,7 @@ jobs:
         path: ./target/site/jacoco
 
   publish:
+    needs: test
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -86,7 +87,7 @@ jobs:
           # github.repository as <your-account>/<your-repo>
           IMAGE_NAME: ${{ env.NAMESPACE }}/${{ env.IMAGE_NAME }}
           # Tag name of the image to publish
-          tag-name: latest,${{ github.sha }}
+          tag-name: latest
           # Username to login to registry
           USERNAME: ${{ github.actor }}
           # Password to login to registry
