@@ -164,6 +164,12 @@
                     </to>
                     <from>
                         <image>eclipse-temurin:21-jdk</image>
+                        <platforms>
+                            <platform>
+                                <architecture>arm64</architecture>
+                                <os>linux</os>
+                            </platform>
+                        </platforms>
                     </from>
                     <container>
                         <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
