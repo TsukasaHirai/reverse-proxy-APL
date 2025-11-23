@@ -69,14 +69,20 @@ jobs:
         name: my-artifact
         path: ./target/site/jacoco
 
-    - name: Log into registry ${{ env.REGISTRY }}
-      if: github.event_name == 'push'
-      uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Build and Push Docker Image with Jib
-      if: github.event_name == 'push'
-      run: ./mvnw compile jib:build -Djib.to.image=${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ env.IMAGE_NAME }}
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: JIB container build and publish
+        uses: MathieuSoysal/jib-container-publish.yml@v2.1.5
+        with:
+          # Use docker.io for Docker Hub if empty
+          REGISTRY: ${{ env.REGISTRY }}
+          # github.repository as <your-account>/<your-repo>
+          IMAGE_NAME: ${{ env.NAMESPACE }}/${{ env.IMAGE_NAME }}
+          # Tag name of the image to publish
+          tag-name: latest
+          # Username to login to registry
+          USERNAME: ${{ github.actor }}
+          # Password to login to registry
+          PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          java-version: 21
