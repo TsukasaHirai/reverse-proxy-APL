@@ -14,6 +14,13 @@ on:
   pull_request:
     branches: [ "master" ]
 
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  NAMESPACE: tsukasahirai
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   test:
 
@@ -62,3 +69,7 @@ jobs:
       with:
         name: my-artifact
         path: ./target/site/jacoco
+    
+    - name: Build and Push Docker Image with Jib
+      if: github.event_name == 'push'
+      run: ./mvnw compile jib:build -Djib.to.image=${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ env.IMAGE_NAME }} -Djib.to.auth.username=${{ github.actor }} -Djib.to.auth.password=${{ secrets.GITHUB_TOKEN }}
