@@ -33,4 +33,4 @@ jobs:
           USERNAME: ${{ github.actor }}
           # Password to login to registry
           PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-          java-version: 21
+          java-version: 25
