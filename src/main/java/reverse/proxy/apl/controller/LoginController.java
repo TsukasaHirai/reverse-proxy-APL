@@ -44,7 +44,7 @@ public class LoginController {
 	 * ログイン処理
 	 * 
 	 * @param dn Nginxから受信したクライアント証明書情報
-	 * @param loginUser formで受信したユーザー情報
+	 * @param loginUser formで受信し たユーザー情報
 	 * @param result バリデーション結果
 	 * @return
 	 */
