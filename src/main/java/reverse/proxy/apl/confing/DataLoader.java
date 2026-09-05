@@ -1,7 +1,6 @@
 package reverse.proxy.apl.confing;
 
 import java.util.Set;
-import java.util.logging.Logger;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,6 +11,7 @@ import com.google.cloud.spring.data.spanner.core.admin.SpannerSchemaUtils;
 import com.google.cloud.spring.data.spanner.core.mapping.Table;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import reverse.proxy.apl.entity.Employee;
 import reverse.proxy.apl.repository.EmployeeRepository;
 
@@ -20,9 +20,9 @@ import reverse.proxy.apl.repository.EmployeeRepository;
  */
 @RequiredArgsConstructor
 @Component
+@Log
 public class DataLoader implements CommandLineRunner {
 
-	private static final Logger LOG = Logger.getLogger(DataLoader.class.getName());
 
 	private final PasswordEncoder passwordEncoder;
 
@@ -58,13 +58,13 @@ public class DataLoader implements CommandLineRunner {
 			.forEach(t -> {
 				String tableName = t.getAnnotation(Table.class).name();
 				if (!this.spannerDatabaseAdminTemplate.tableExists(tableName)) {
-					LOG.info("テーブルを作成します");
+					log.info("テーブルを作成します");
 					this.spannerDatabaseAdminTemplate.executeDdlStrings(
 							this.spannerSchemaUtils.getCreateTableDdlStringsForInterleavedHierarchy(t), true);
 				}
 			});
 		} catch (Exception e) {
-			LOG.severe(e.getMessage());
+			log.severe(e.getMessage());
 		}
 
     }

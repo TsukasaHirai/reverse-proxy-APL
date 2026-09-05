@@ -1,7 +1,6 @@
 package reverse.proxy.apl.controller;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.context.Scope;
+import lombok.extern.java.Log;
 import reverse.proxy.apl.form.LoginUser;
 import reverse.proxy.apl.util.LoginUtil;
 import reverse.proxy.apl.util.TraceUtil;
 
 @Controller
+@Log
 public class LoginController {
 	
-	private static final Logger LOG = Logger.getLogger(LoginController.class.getName());
-
 	@GetMapping({"/", "/home"})
 	public String index() {
 		return "home";
@@ -53,13 +52,13 @@ public class LoginController {
 		Span span = TraceUtil.startSpan("login");
 		try (Scope scope = span.makeCurrent()){
 			if (result.hasErrors()) {
-				LOG.log(Level.INFO, "バリデーションエラー:" + loginUser.toString());
+				log.log(Level.INFO, "バリデーションエラー:" + loginUser.toString());
 				return "login";
 			}
 			
-			LOG.log(Level.INFO, "DN情報：" +  dn + "ユーザー名：" + loginUser.getUsername());
+			log.log(Level.INFO, "DN情報：" +  dn + "ユーザー名：" + loginUser.getUsername());
 			if (LoginUtil.isEqualsUsernameAndCommonName(dn, loginUser.getUsername())) {
-				LOG.log(Level.INFO, "証明書情報とユーザー名が一致しました");
+				log.log(Level.INFO, "証明書情報とユーザー名が一致しました");
 			}
 		} finally {
 			span.end();
