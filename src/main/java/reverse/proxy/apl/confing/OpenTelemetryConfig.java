@@ -24,7 +24,7 @@ public class OpenTelemetryConfig {
 	
 	@Bean
 	AutoConfigurationCustomizerProvider otelCustomizer() {
-		return p -> p.addSamplerCustomizer((sampler, configProperties) -> getCustomSampler());
+		return p -> p.addSamplerCustomizer(( _, _) -> getCustomSampler());
 	}
 	
 	

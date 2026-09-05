@@ -41,7 +41,7 @@ class UserDetailsServiceImplTest {
 		employee.setUsername(testUsername);
 		employee.setPassword(testPassword);
 		
-		doAnswer(invocation -> Optional.of(employee)).when(repository).findByUsername(any());
+		doAnswer(_ -> Optional.of(employee)).when(repository).findByUsername(any());
 		// Act
 		UserDetails actual = target.loadUserByUsername(testUsername);
 		
